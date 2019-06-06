@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\" />
     <Folder Include="Domain\Business\" />
     <Folder Include="Domain\ViewModels\" />
     <Folder Include="wwwroot\" />
