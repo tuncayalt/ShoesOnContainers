@@ -14,5 +14,10 @@
 
         public int CatalogBrandId { get; set; }
         public CatalogBrand CatalogBrand { get; set; }
+
+        public void ReplacePicturePlaceholder(string oldValue, string newValue)
+        {
+            PictureUrl = PictureUrl.Replace(oldValue, newValue);
+        }
     }
 }
