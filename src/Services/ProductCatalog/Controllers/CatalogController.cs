@@ -27,7 +27,7 @@ namespace ProductCatalog.Controllers
             _settings = settings;
             _business = business;
             _logger = logger;
-            //context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            _context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         [HttpGet]
@@ -174,13 +174,18 @@ namespace ProductCatalog.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
                 var createdItemId = await _business.CreateProduct(_context, catalogItemToCreate);
                 if (createdItemId == null)
                 {
                     return BadRequest("Cannot create item.");
                 }
 
-                return CreatedAtAction(nameof(GetCatalogItemById), new { id = createdItemId });
+                return CreatedAtAction(nameof(GetCatalogItemById), new { id = createdItemId.Value });
             }
             catch (Exception ex)
             {
@@ -195,13 +200,18 @@ namespace ProductCatalog.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
                 var updatedItemId = await _business.UpdateProduct(_context, catalogItemToUpdate);
                 if (updatedItemId == null)
                 {
                     return NotFound($"Cannot find product with id: {catalogItemToUpdate.Id}");
                 }
 
-                return CreatedAtAction(nameof(GetCatalogItemById), new { id = updatedItemId });
+                return CreatedAtAction(nameof(GetCatalogItemById), new { id = updatedItemId.Value }, catalogItemToUpdate);
             }
             catch (Exception ex)
             {

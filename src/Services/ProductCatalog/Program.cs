@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ProductCatalog.Data;
@@ -19,6 +20,7 @@ namespace ProductCatalog
                 try
                 {
                     var context = services.GetRequiredService<CatalogContext>();
+                    context.Database.Migrate();
                     CatalogSeed.SeedTestData(context).Wait();
                 }
                 catch (Exception ex)
