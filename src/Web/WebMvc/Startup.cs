@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShoesOnContainers.Web.WebMvc.Infrastructure.HttpClients;
+using ShoesOnContainers.Web.WebMvc.Services.CatalogServices;
 
 namespace ShoesOnContainers.Web.WebMvc
 {
@@ -32,7 +33,11 @@ namespace ShoesOnContainers.Web.WebMvc
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.Configure<AppSettings>(Configuration);
+
+
             services.AddSingleton<IHttpClient, CustomHttpClient>();
+            services.AddTransient<ICatalogService, CatalogService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -58,7 +63,7 @@ namespace ShoesOnContainers.Web.WebMvc
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Catalog}/{action=Index}/{id?}");
             });
         }
     }
